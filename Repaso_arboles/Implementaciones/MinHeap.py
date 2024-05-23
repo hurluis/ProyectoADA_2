@@ -245,7 +245,7 @@ min_heap.insert(12)
 
 
 
-print("Árbol de min-heap:")
+print("Árbol de min-heap:\n")
 min_heap.printTree()
 
 
