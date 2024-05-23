@@ -60,7 +60,7 @@ class queue:
       return popped_node
 
 
-class BinaryTree:
+class MinHeap:
     def __init__(self, value=None):
         self.value = value
         self.leftchild = None
@@ -81,13 +81,13 @@ class BinaryTree:
             self.length = 1 
         else:
             if self.leftchild is None:
-                new_node = BinaryTree(value)
+                new_node = MinHeap(value)
                 new_node.parent = self
                 self.leftchild = new_node
                 self.length += 1  
                 self.queue.enqueue(new_node)
             elif self.rightchild is None:
-                new_node = BinaryTree(value)
+                new_node = MinHeap(value)
                 new_node.parent = self
                 self.rightchild = new_node
                 self.length += 1  
@@ -100,6 +100,7 @@ class BinaryTree:
                     self.rightchild.insert(value)
                     self.length +=1
 
+        self.verificarMinHeap()
 
     
         
@@ -158,6 +159,7 @@ class BinaryTree:
                     tempNode = tempNode.leftchild
                 self.value = tempNode.value
                 self.rightchild = self.rightchild.deleteNode(tempNode.value)
+                self.verificarMinHeap()
             # Caso 3: Tiene solo un hijo
             elif self.leftchild is not None:
                 self.value = self.leftchild.value
@@ -174,10 +176,65 @@ class BinaryTree:
                 self.rightchild = self.rightchild.deleteNode(value)
 
         return self
+
     
 
+    def removeMin(self):
+        if self.leftchild is None and self.rightchild is None:
+            if self.parent is not None:
+                if self.parent.leftchild == self:
+                    self.parent.leftchild = None
+                else:
+                    self.parent.rightchild = None
+            min_value = self.value
+            self.value = None
+            self.length -= 1
+            return min_value
+                
+        min_value = self.value
+        last_node = self.LastNode(self)
+        self.value = last_node.value
+        
+        if last_node.parent:
+            if last_node.parent.leftchild == last_node:
+                last_node.parent.leftchild = None
+            else:
+                last_node.parent.rightchild = None
+            self.length -= 1
+        else:
+            self.value = None
+            self.length -= 1
+        
+        self.verificarMinHeap()
+        return min_value
 
-min_heap = BinaryTree()
+
+    def LastNode(self, rootNode):
+        if rootNode is None:
+            return None
+        
+        queue = [rootNode]
+        while queue:
+            current = queue.pop(0)
+            if current.leftchild is not None:
+                queue.append(current.leftchild)
+            if current.rightchild is not None:
+                queue.append(current.rightchild)
+        
+        return current
+
+
+
+    def verificarMinHeap(self):
+        if self.leftchild and self.value > self.leftchild.value:
+            self.value, self.leftchild.value = self.leftchild.value, self.value
+            self.leftchild.verificarMinHeap()
+        if self.rightchild and self.value > self.rightchild.value:
+            self.value, self.rightchild.value = self.rightchild.value, self.value
+            self.rightchild.verificarMinHeap()
+
+            
+min_heap = MinHeap()
 min_heap.insert(4)
 min_heap.insert(3)
 min_heap.insert(2)
@@ -193,8 +250,8 @@ min_heap.printTree()
 
 
 
+min_heap.removeMin()
+min_heap.printTree()
 
 min_heap.deleteNode(4)
-min_heap.printTree()
-min_heap.deleteNode(3)
 min_heap.printTree()
