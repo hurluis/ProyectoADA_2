@@ -278,9 +278,6 @@ class BinaryTree:
         return minima
 
    
-
-    
-
             
 binaryTree = BinaryTree()
 binaryTree.insert(4)
@@ -298,7 +295,6 @@ print("Árbol de min-heap:")
 binaryTree.printTree()
 
 
-binaryTree.deleteNode(4)
-binaryTree.printTree()
 
 print(binaryTree.deepestValue())
+
