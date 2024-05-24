@@ -372,7 +372,31 @@ class MinHeap:
             suma_total += self.rightchild.calcsuma_arbol()
         
         return suma_total
+    
+    def encontrarNivelValor(self, valor, nivel=1):
+        if self.value == valor:
+            return nivel
+        
+        nivel_izquierdo = self.leftchild.encontrarNivelValor(valor, nivel + 1) if self.leftchild else 0
+        nivel_derecho = self.rightchild.encontrarNivelValor(valor, nivel + 1) if self.rightchild else 0
             
+        return max(nivel_izquierdo, nivel_derecho)
+    
+    def operacion_arbol(self):
+        resultado_izquierdo = 0
+        resultado_derecho = 0
+
+        if self.leftchild:
+            if self.leftchild.leftchild and self.leftchild.rightchild:
+                suma_hijos_izquierdo = self.leftchild.leftchild.calcsuma_arbol() + self.leftchild.rightchild.calcsuma_arbol()
+                resultado_izquierdo = suma_hijos_izquierdo * self.leftchild.value
+        if self.rightchild:
+            if self.rightchild.leftchild and self.rightchild.rightchild:
+                suma_hijos_derecho = self.rightchild.leftchild.calcsuma_arbol() + self.rightchild.rightchild.calcsuma_arbol()
+                resultado_derecho = suma_hijos_derecho * self.rightchild.value
+
+        resultado = resultado_izquierdo - resultado_derecho
+        return resultado
 min_heap = MinHeap()
 min_heap.insert(4)
 min_heap.insert(3)

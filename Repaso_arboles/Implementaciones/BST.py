@@ -324,6 +324,22 @@ class BST:
             
         return max(nivel_izquierdo, nivel_derecho)
     
+    def operacion_arbol(self):
+        resultado_izquierdo = 0
+        resultado_derecho = 0
+
+        if self.leftchild:
+            if self.leftchild.leftchild and self.leftchild.rightchild:
+                suma_hijos_izquierdo = self.leftchild.leftchild.calcsuma_arbol() + self.leftchild.rightchild.calcsuma_arbol()
+                resultado_izquierdo = suma_hijos_izquierdo * self.leftchild.value
+        if self.rightchild:
+            if self.rightchild.leftchild and self.rightchild.rightchild:
+                suma_hijos_derecho = self.rightchild.leftchild.calcsuma_arbol() + self.rightchild.rightchild.calcsuma_arbol()
+                resultado_derecho = suma_hijos_derecho * self.rightchild.value
+
+        resultado = resultado_izquierdo - resultado_derecho
+        return resultado
+    
 
 bt = BST()
 bt.insert(10)
