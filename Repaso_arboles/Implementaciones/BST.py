@@ -223,7 +223,63 @@ class BST:
                 customqueue.enqueue(current.value.rightchild)
 
         return print(elements)
-                
+    
+    def deepestLeftChild(self):
+        if not self:
+            return None
+        
+        while self.leftchild:
+            self = self.leftchild
+        return self
+
+    def deepestRightChild(self):
+        if not self:
+            return None
+        
+        while self.rightchild:
+            self = self.rightchild
+        return self
+    
+
+    def deepestLeftChild(self):
+        if not self:
+            return None
+        
+        while self.leftchild:
+            self = self.leftchild
+        return self
+
+    def deepestRightChild(self):
+        if not self:
+            return None
+        
+        while self.rightchild:
+            self = self.rightchild
+        return self
+    
+    def deepestValue(self):
+        deepest_left = self.deepestLeftChild()
+        deepest_right = self.deepestRightChild()
+
+        if deepest_left and deepest_right:
+            return deepest_left.value if deepest_left.value > deepest_right.value else deepest_right.value
+        elif deepest_left:
+            return deepest_left.value
+        elif deepest_right:
+            return deepest_right.value
+        else:
+            return self.value
+
+    def DiferenciaAbsolutaMinima(self):
+        values = self.mostrarElementosArbol()
+        
+        minima = float('inf')
+        for elemento in range(1, len(values)):
+            diferencia = abs(values[elemento] - values[elemento-1])
+            if diferencia < minima:
+                minima = diferencia
+        
+        return minima
 
 # Example of usage:
 bt = BST()
@@ -257,3 +313,8 @@ nodos=bt.mostrarElementosArbol()
 print("\nNodos del arbol: ", nodos)
 
 (bt.levelOrderTraversal())
+
+print(bt.deepestRightChild().value)
+
+
+print(bt.DiferenciaAbsolutaMinima())

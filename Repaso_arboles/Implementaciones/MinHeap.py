@@ -255,6 +255,84 @@ class MinHeap:
             if elemento ==numero:
                 Current.append(elemento)
         return print(len(Current))
+    
+    def CantidadNumeros(self, elemento):
+        if self is None:
+            return 0
+        almacenador = 1 if self.value == elemento else 0
+        contadorIzquiuera = self.leftchild.CantidadNumeros(elemento) if self.leftchild else 0
+        condadorDerecha = self.rightchild.CantidadNumeros(elemento) if self.rightchild else 0
+
+        return almacenador +    contadorIzquiuera + condadorDerecha
+    
+    def mostrarElementosArbol(self):
+        elements = []
+        if self.leftchild:
+            elements.extend(self.leftchild.mostrarElementosArbol())
+        elements.append(self.value)
+        if self.rightchild:
+            elements.extend(self.rightchild.mostrarElementosArbol())
+        return elements
+    
+
+    def levelOrderTraversal(self):
+        if not self:
+            return []
+
+        elements = []
+        customqueue = queue()
+        customqueue.enqueue(self)
+
+        while not customqueue.is_empty():
+            current = customqueue.dequeue()
+            elements.append(current.value.value)  
+            if current.value.leftchild:
+                customqueue.enqueue(current.value.leftchild)
+
+            if current.value.rightchild:
+                customqueue.enqueue(current.value.rightchild)
+
+        return print(elements)
+    
+    def deepestLeftChild(self):
+        if not self:
+            return None
+        
+        while self.leftchild:
+            self = self.leftchild
+        return self
+
+    def deepestRightChild(self):
+        if not self:
+            return None
+        
+        while self.rightchild:
+            self = self.rightchild
+        return self
+    
+    def deepestValue(self):
+        deepest_left = self.deepestLeftChild()
+        deepest_right = self.deepestRightChild()
+
+        if deepest_left and deepest_right:
+            return deepest_left.value if deepest_left.value > deepest_right.value else deepest_right.value
+        elif deepest_left:
+            return deepest_left.value
+        elif deepest_right:
+            return deepest_right.value
+        else:
+            return self.value
+
+    def DiferenciaAbsolutaMinima(self):
+        values = self.mostrarElementosArbol()
+        
+        minima = float('inf')
+        for elemento in range(1, len(values)):
+            diferencia = abs(values[elemento] - values[elemento-1])
+            if diferencia < minima:
+                minima = diferencia
+        
+        return minima
 
 
             

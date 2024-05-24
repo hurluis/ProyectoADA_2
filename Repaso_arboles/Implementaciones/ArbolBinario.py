@@ -60,7 +60,7 @@ class queue:
       return popped_node
 
 
-class MinHeap:
+class BinaryTree:
     def __init__(self, value=None):
         self.value = value
         self.leftchild = None
@@ -81,13 +81,13 @@ class MinHeap:
             self.length = 1 
         else:
             if self.leftchild is None:
-                new_node = MinHeap(value)
+                new_node = BinaryTree(value)
                 new_node.parent = self
                 self.leftchild = new_node
                 self.length += 1  
                 self.queue.enqueue(new_node)
             elif self.rightchild is None:
-                new_node = MinHeap(value)
+                new_node = BinaryTree(value)
                 new_node.parent = self
                 self.rightchild = new_node
                 self.length += 1  
@@ -100,8 +100,10 @@ class MinHeap:
                     self.rightchild.insert(value)
                     self.length +=1
 
-        self.verificarMinHeap()
-
+    def MostrarHojas(self):
+        Hojas = []
+        self.ObtenerHojas(self, Hojas)
+        return Hojas
     
         
     
@@ -159,7 +161,6 @@ class MinHeap:
                     tempNode = tempNode.leftchild
                 self.value = tempNode.value
                 self.rightchild = self.rightchild.deleteNode(tempNode.value)
-                self.verificarMinHeap()
             # Caso 3: Tiene solo un hijo
             elif self.leftchild is not None:
                 self.value = self.leftchild.value
@@ -177,81 +178,127 @@ class MinHeap:
 
         return self
 
+    def ObtenerHojas(self, node, Hojas):
+        if node is None:
+            return
+
+        if node.leftchild is None and node.rightchild is None:
+            Hojas.append(node.value)
+
+        if node.leftchild:
+            self.ObtenerHojas(node.leftchild, Hojas)
+
+        if node.rightchild:
+            self.ObtenerHojas(node.rightchild, Hojas)
+
+    def encontrar(self, numero):
+        Current=[]
+        for elemento in self.MostrarHojas():
+            if elemento ==numero:
+                Current.append(elemento)
+        return print(len(Current))
     
 
-    def removeMin(self):
-        if self.leftchild is None and self.rightchild is None:
-            if self.parent is not None:
-                if self.parent.leftchild == self:
-                    self.parent.leftchild = None
-                else:
-                    self.parent.rightchild = None
-            min_value = self.value
-            self.value = None
-            self.length -= 1
-            return min_value
-                
-        min_value = self.value
-        last_node = self.LastNode(self)
-        self.value = last_node.value
-        
-        if last_node.parent:
-            if last_node.parent.leftchild == last_node:
-                last_node.parent.leftchild = None
-            else:
-                last_node.parent.rightchild = None
-            self.length -= 1
-        else:
-            self.value = None
-            self.length -= 1
-        
-        self.verificarMinHeap()
-        return min_value
+    def CantidadNumeros(self, elemento):
+        if self is None:
+            return 0
+        almacenador = 1 if self.value == elemento else 0
+        contadorIzquiuera = self.leftchild.CantidadNumeros(elemento) if self.leftchild else 0
+        condadorDerecha = self.rightchild.CantidadNumeros(elemento) if self.rightchild else 0
 
+        return almacenador +    contadorIzquiuera + condadorDerecha
+    
+    def mostrarElementosArbol(self):
+        elements = []
+        if self.leftchild:
+            elements.extend(self.leftchild.mostrarElementosArbol())
+        elements.append(self.value)
+        if self.rightchild:
+            elements.extend(self.rightchild.mostrarElementosArbol())
+        return elements
+    
 
-    def LastNode(self, rootNode):
-        if rootNode is None:
+    def levelOrderTraversal(self):
+        if not self:
+            return []
+
+        elements = []
+        customqueue = queue()
+        customqueue.enqueue(self)
+
+        while not customqueue.is_empty():
+            current = customqueue.dequeue()
+            elements.append(current.value.value)  
+            if current.value.leftchild:
+                customqueue.enqueue(current.value.leftchild)
+
+            if current.value.rightchild:
+                customqueue.enqueue(current.value.rightchild)
+
+        return print(elements)
+    
+    def deepestLeftChild(self):
+        if not self:
             return None
         
-        queue = [rootNode]
-        while queue:
-            current = queue.pop(0)
-            if current.leftchild is not None:
-                queue.append(current.leftchild)
-            if current.rightchild is not None:
-                queue.append(current.rightchild)
+        while self.leftchild:
+            self = self.leftchild
+        return self
+
+    def deepestRightChild(self):
+        if not self:
+            return None
         
-        return current
+        while self.rightchild:
+            self = self.rightchild
+        return self
+    
+    def deepestValue(self):
+        deepest_left = self.deepestLeftChild()
+        deepest_right = self.deepestRightChild()
 
+        if deepest_left and deepest_right:
+            return deepest_left.value if deepest_left.value > deepest_right.value else deepest_right.value
+        elif deepest_left:
+            return deepest_left.value
+        elif deepest_right:
+            return deepest_right.value
+        else:
+            return self.value
 
+    def DiferenciaAbsolutaMinima(self):
+        values = self.mostrarElementosArbol()
+        
+        minima = float('inf')
+        for elemento in range(1, len(values)):
+            diferencia = abs(values[elemento] - values[elemento-1])
+            if diferencia < minima:
+                minima = diferencia
+        
+        return minima
 
-    def verificarMinHeap(self):
-        if self.leftchild and self.value > self.leftchild.value:
-            self.value, self.leftchild.value = self.leftchild.value, self.value
-            self.leftchild.verificarMinHeap()
-        if self.rightchild and self.value > self.rightchild.value:
-            self.value, self.rightchild.value = self.rightchild.value, self.value
-            self.rightchild.verificarMinHeap()
+   
+
+    
 
             
-min_heap = MinHeap()
-min_heap.insert(4)
-min_heap.insert(3)
-min_heap.insert(2)
-min_heap.insert(1)
-min_heap.insert(5)
-min_heap.insert(6)
-min_heap.insert(12)
+binaryTree = BinaryTree()
+binaryTree.insert(4)
+binaryTree.insert(3)
+binaryTree.insert(2)
+binaryTree.insert(1)
+binaryTree.insert(1)
+binaryTree.insert(5)
+binaryTree.insert(6)
+binaryTree.insert(12)
 
 
 
 print("Árbol de min-heap:")
-min_heap.printTree()
+binaryTree.printTree()
 
 
+binaryTree.deleteNode(4)
+binaryTree.printTree()
 
-min_heap.removeMin()
-min_heap.printTree()
-
-min_heap.deleteNode(4)
-min_heap.printTree()
+print(binaryTree.deepestValue())
