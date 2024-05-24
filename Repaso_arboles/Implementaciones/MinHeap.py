@@ -103,7 +103,10 @@ class MinHeap:
         self.verificarMinHeap()
 
     
-        
+    def MostrarHojas(self):
+        Hojas = []
+        self.ObtenerHojas(self, Hojas)
+        return Hojas   
     
 
     def searchNode(self, value):
@@ -233,14 +236,35 @@ class MinHeap:
             self.value, self.rightchild.value = self.rightchild.value, self.value
             self.rightchild.verificarMinHeap()
 
+    def ObtenerHojas(self, node, Hojas):
+        if node is None:
+            return
+
+        if node.leftchild is None and node.rightchild is None:
+            Hojas.append(node.value)
+
+        if node.leftchild:
+            self.ObtenerHojas(node.leftchild, Hojas)
+
+        if node.rightchild:
+            self.ObtenerHojas(node.rightchild, Hojas)
+
+    def encontrar(self, numero):
+        Current=[]
+        for elemento in self.MostrarHojas():
+            if elemento ==numero:
+                Current.append(elemento)
+        return print(len(Current))
+
+
             
 min_heap = MinHeap()
 min_heap.insert(4)
 min_heap.insert(3)
 min_heap.insert(2)
 min_heap.insert(1)
-min_heap.insert(5)
-min_heap.insert(6)
+min_heap.insert(4)
+min_heap.insert(4)
 min_heap.insert(12)
 
 
@@ -248,10 +272,7 @@ min_heap.insert(12)
 print("Árbol de min-heap:\n")
 min_heap.printTree()
 
+print(min_heap.MostrarHojas())
 
+min_heap.encontrar(4)
 
-min_heap.removeMin()
-min_heap.printTree()
-
-min_heap.deleteNode(4)
-min_heap.printTree()
