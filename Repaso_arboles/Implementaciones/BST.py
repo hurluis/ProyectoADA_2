@@ -178,7 +178,7 @@ class BST:
         if node.rightchild:
             self.ObtenerHojas(node.rightchild, Hojas)
 
-    def encontrar(self, numero):
+    def encontrarEnHojas(self, numero):
         Current=[]
         for elemento in self.MostrarHojas():
             if elemento ==numero:
@@ -224,23 +224,7 @@ class BST:
 
         return print(elements)
     
-    def deepestLeftChild(self):
-        if not self:
-            return None
-        
-        while self.leftchild:
-            self = self.leftchild
-        return self
-
-    def deepestRightChild(self):
-        if not self:
-            return None
-        
-        while self.rightchild:
-            self = self.rightchild
-        return self
     
-
     def deepestLeftChild(self):
         if not self:
             return None
@@ -304,7 +288,43 @@ class BST:
         else:
             altura_derecha = 0
         return max(altura_izquierda, altura_derecha) + 1
-# Example of usage:
+    
+    def cantidad_nodos(self):
+        current=self.mostrarElementosArbol()
+        return len(current)
+
+    def calcsuma_arbol(self):
+        suma_total = self.value
+    
+        if self.leftchild:
+            suma_total += self.leftchild.calcsuma_arbol()
+        
+        if self.rightchild:
+            suma_total += self.rightchild.calcsuma_arbol()
+        
+        return suma_total
+    
+    def invertirArbol(self):
+        if self is None:
+            return None
+
+        self.leftchild, self.rightchild = self.rightchild, self.leftchild
+
+        if self.leftchild:
+            self.leftchild.invertirArbol()
+        if self.rightchild:
+            self.rightchild.invertirArbol()
+
+    def encontrarNivelValor(self, valor, nivel=1):
+        if self.value == valor:
+            return nivel
+        
+        nivel_izquierdo = self.leftchild.encontrarNivelValor(valor, nivel + 1) if self.leftchild else 0
+        nivel_derecho = self.rightchild.encontrarNivelValor(valor, nivel + 1) if self.rightchild else 0
+            
+        return max(nivel_izquierdo, nivel_derecho)
+    
+
 bt = BST()
 bt.insert(10)
 bt.insert(5)
@@ -328,7 +348,7 @@ print("\nHojas:", Hojas)
 print("\nTree after getting Hojas (should be unchanged):")
 bt.printTree()
 
-bt.encontrar(4)
+bt.encontrarEnHojas(4)
 
 print(bt.CantidadNumeros(4))
 
@@ -339,6 +359,14 @@ print("\nNodos del arbol: ", nodos)
 
 print(bt.deepestRightChild().value)
 
+print(bt.calcsuma_arbol())
 
-print(bt.DiferenciaAbsolutaMinima())
+print("Árbol original:")
+bt.printTree()
+
+# Invertir el árbol
+bt.invertirArbol()
+
+print("\nÁrbol invertido:")
+bt.printTree()
 

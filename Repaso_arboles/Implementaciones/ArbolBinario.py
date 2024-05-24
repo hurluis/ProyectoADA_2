@@ -191,7 +191,7 @@ class BinaryTree:
         if node.rightchild:
             self.ObtenerHojas(node.rightchild, Hojas)
 
-    def encontrar(self, numero):
+    def encontrarEnHojas(self, numero):
         Current=[]
         for elemento in self.MostrarHojas():
             if elemento ==numero:
@@ -300,6 +300,42 @@ class BinaryTree:
         else:
             altura_derecha = 0
         return max(altura_izquierda, altura_derecha) + 1
+    
+    def cantidad_nodos(self):
+        current=self.mostrarElementosArbol()
+        return len(current)
+
+    def calcsuma_arbol(self):
+        suma_total = self.value
+    
+        if self.leftchild:
+            suma_total += self.leftchild.calcsuma_arbol()
+        
+        if self.rightchild:
+            suma_total += self.rightchild.calcsuma_arbol()
+        
+        return suma_total
+    
+    def invertirArbol(self):
+        if self is None:
+            return None
+
+        self.leftchild, self.rightchild = self.rightchild, self.leftchild
+
+        if self.leftchild:
+            self.leftchild.invertirArbol()
+        if self.rightchild:
+            self.rightchild.invertirArbol()
+
+    def encontrarNivelValor(self, valor, nivel=1):
+        if self.value == valor:
+            return nivel
+        
+        nivel_izquierdo = self.leftchild.encontrarNivelValor(valor, nivel + 1) if self.leftchild else 0
+        nivel_derecho = self.rightchild.encontrarNivelValor(valor, nivel + 1) if self.rightchild else 0
+            
+        return max(nivel_izquierdo, nivel_derecho)
+
         
 binaryTree = BinaryTree()
 binaryTree.insert(4)
@@ -324,3 +360,5 @@ print(binaryTree.deepestValue())
 print(binaryTree.valor_mayor())
 
 print (binaryTree.calcular_altura())
+
+print(binaryTree.encontrarNivelValor(8))

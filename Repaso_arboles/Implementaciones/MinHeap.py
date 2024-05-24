@@ -249,7 +249,7 @@ class MinHeap:
         if node.rightchild:
             self.ObtenerHojas(node.rightchild, Hojas)
 
-    def encontrar(self, numero):
+    def encontrarEnHojas(self, numero):
         Current=[]
         for elemento in self.MostrarHojas():
             if elemento ==numero:
@@ -357,6 +357,21 @@ class MinHeap:
         else:
             altura_derecha = 0
         return max(altura_izquierda, altura_derecha) + 1
+    
+    def cantidad_nodos(self):
+        current=self.mostrarElementosArbol()
+        return len(current)
+
+    def calcsuma_arbol(self):
+        suma_total = self.value
+    
+        if self.leftchild:
+            suma_total += self.leftchild.calcsuma_arbol()
+        
+        if self.rightchild:
+            suma_total += self.rightchild.calcsuma_arbol()
+        
+        return suma_total
             
 min_heap = MinHeap()
 min_heap.insert(4)
@@ -374,5 +389,5 @@ min_heap.printTree()
 
 print(min_heap.MostrarHojas())
 
-min_heap.encontrar(4)
+min_heap.encontrarEnHojas(4)
 
