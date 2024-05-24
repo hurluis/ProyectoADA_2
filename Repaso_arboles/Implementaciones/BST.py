@@ -281,6 +281,29 @@ class BST:
         
         return minima
 
+    def valor_mayor(self):
+        current=[]
+        iteraciones=0
+        while len(self.mostrarElementosArbol()) != iteraciones:
+            mayor=float('-inf')
+            for elemento in self.mostrarElementosArbol():
+                mayor=max(mayor, elemento)
+                iteraciones+=1
+            current.append(mayor)
+        return current
+
+    def calcular_altura(self):
+        if not self:
+            return 0
+        if self.leftchild:
+            altura_izquierda = self.leftchild.calcular_altura()
+        else:
+            altura_izquierda = 0
+        if self.rightchild:
+            altura_derecha = self.rightchild.calcular_altura()
+        else:
+            altura_derecha = 0
+        return max(altura_izquierda, altura_derecha) + 1
 # Example of usage:
 bt = BST()
 bt.insert(10)
@@ -318,3 +341,4 @@ print(bt.deepestRightChild().value)
 
 
 print(bt.DiferenciaAbsolutaMinima())
+
