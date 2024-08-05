@@ -67,11 +67,11 @@ def organizar_lista(head):
         nodo.next = de_lista(elementos, indice + 1)
         return nodo
     
-    # Extraer elementos y filtrar nodos con None
-    elementos = [elem for elem in a_lista(head) if elem[0] is not None]
+    elementos = [elemento for elemento in a_lista(head) if elemento[0] is not None]
     elementos.sort()
     return de_lista(elementos)
 
+#octavo metodo es O(n)
 def imprimir_lista(head):
     if head is None:
         print("")
