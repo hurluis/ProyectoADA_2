@@ -45,12 +45,14 @@ def insertar_numero(head, numero, posicion, contador=0):
     head.next = insertar_numero(head.next, numero, posicion, contador + 1)
     return head
 
+#sexto metodo es O(n)
 def actualizar_indices(head, contador=0):
     if head is None:
         return
     head.numero = contador
     actualizar_indices(head.next, contador + 1)
 
+#septimo metodo es O(n log n)
 def organizar_lista(head):
     def a_lista(head):
         if head is None:
