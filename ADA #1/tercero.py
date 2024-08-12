@@ -26,24 +26,30 @@ class ListaEnlazada:
     # O(n)
     def insertar_letra(self, letra_nueva, posicion):
         if self.cabeza is None:
-            return  # Lista vacía, no se puede insertar
-
-        if posicion == 0:
-            self.cabeza.letra = letra_nueva
-            return
+            return  
 
         actual = self.cabeza
         indice_actual = 0
 
         while actual and indice_actual < posicion:
+            if indice_actual == posicion - 1:
+                prev = actual
             actual = actual.siguiente
             indice_actual += 1
 
         if actual:
-            actual.letra = letra_nueva
+            if letra_nueva <= actual.letra:
+                temp_letra = actual.letra
+                actual.letra = letra_nueva
+                nuevo_nodo = Nodo(actual.numero, temp_letra)
+                nuevo_nodo.siguiente = actual.siguiente
+                actual.siguiente = nuevo_nodo
+            else:
+                nuevo_nodo = Nodo(actual.numero, letra_nueva)
+                nuevo_nodo.siguiente = actual.siguiente
+                actual.siguiente = nuevo_nodo
         else:
             print(f"La posición {posicion} está fuera de rango.")
-
 
     # O(n)
     def imprimir(self):
@@ -70,10 +76,14 @@ print()
 
 numero = int(input("Ingrese un número: "))
 letra = input("Ingrese una letra: ")
-posicion= int(input("la posicion en la que desea poner la letra: "))
-print()
+posicion = int(input("La posición en la que desea poner la letra: "))
+print("\n")
 
-lista.insertar(numero, 'A')  
+actual = lista.cabeza
+while actual and actual.numero < numero:
+    letra_existente = actual.letra
+    actual = actual.siguiente
+lista.insertar(numero, letra_existente if letra_existente else 'A')
 
 lista.insertar_letra(letra, posicion)
 
