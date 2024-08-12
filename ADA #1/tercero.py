@@ -23,7 +23,7 @@ class ListaEnlazada:
             nuevo_nodo.siguiente = actual.siguiente
             actual.siguiente = nuevo_nodo
 
-    # O(n)
+    # O(n²)
     def insertar_letra(self, letra_nueva, posicion):
         if self.cabeza is None:
             return  
@@ -51,7 +51,7 @@ class ListaEnlazada:
         else:
             print(f"La posición {posicion} está fuera de rango.")
 
-    # O(n)
+    # O(n³)
     def imprimir(self):
         actual = self.cabeza
         while actual:

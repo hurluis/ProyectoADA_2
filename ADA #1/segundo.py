@@ -25,7 +25,7 @@ class ListaEnlazada:
             return nodo
     
     #O(1)
-    def insertar_letra_inicio(self, letra_nueva):
+    def insertar_letra(self, letra_nueva):
         if self.cabeza is not None:
             self.cabeza.letra = letra_nueva
 
@@ -62,7 +62,7 @@ print("\n")
 
 lista.insertar(numero, 'A')  
 
-lista.insertar_letra_inicio(letra)
+lista.insertar_letra(letra)
 
 print("Lista después de insertar el número y la letra:")
 lista.imprimir()
