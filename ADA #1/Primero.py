@@ -24,7 +24,7 @@ class ListaEnlazada:
             nodo.siguiente = self._insertar_recursivo(nodo.siguiente, numero, letra)
             return nodo
     
-    #O(n)
+    #O(n/2)
     def insertar_letra_medio(self, letra_nueva):
         longitud = self._contar_recursivo(self.cabeza)
         posicion_media = longitud // 2
