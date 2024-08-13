@@ -29,13 +29,13 @@ class ListaEnlazada:
             return  
 
         actual = self.cabeza
-        indice_actual = 0
+        indice = 0
 
-        while actual and indice_actual < posicion:
-            if indice_actual == posicion - 1:
+        while actual and indice < posicion:
+            if indice == posicion - 1:
                 prev = actual
             actual = actual.siguiente
-            indice_actual += 1
+            indice += 1
 
         if actual:
             if letra_nueva <= actual.letra:
