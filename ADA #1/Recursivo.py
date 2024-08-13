@@ -31,7 +31,12 @@ class ListaEnlazada:
     #O(n²)
     def _insertar_letra_recursivo(self, nodo, letra_nueva, posicion, indice_actual):
         if nodo is None:
-            return None
+            return Nodo(indice_actual, letra_nueva)
+        
+        if nodo.siguiente is None:
+            nuevo_nodo = Nodo(nodo.numero + 1, letra_nueva)
+            nodo.siguiente = nuevo_nodo
+            return nodo
         
         if indice_actual == posicion:
             if letra_nueva <= nodo.letra:
@@ -40,7 +45,7 @@ class ListaEnlazada:
                 nodo.letra = letra_nueva
                 nodo.siguiente = nuevo_nodo
             else:
-                nuevo_nodo = Nodo(nodo.numero, letra_nueva)
+                nuevo_nodo = Nodo(nodo.numero + 1, letra_nueva)
                 nuevo_nodo.siguiente = nodo.siguiente
                 nodo.siguiente = nuevo_nodo
             return nodo
@@ -64,7 +69,7 @@ class ListaEnlazada:
     def obtener_letra(self, numero):
         return self._obtener_letra_recursivo(self.cabeza, numero)
 
-    #O(n²)
+    #O(n)
     def _obtener_letra_recursivo(self, nodo, numero):
         if nodo is None or nodo.numero >= numero:
             return 'A'  
