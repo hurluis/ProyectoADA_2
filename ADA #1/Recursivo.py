@@ -16,14 +16,16 @@ class ListaEnlazada:
 
     #O(n²)
     def _insertar_recursivo(self, nodo, numero, letra):
-        if nodo is None or numero < nodo.numero:
+        if nodo is None:
+            return Nodo(numero, letra)
+        if numero < nodo.numero:
             nuevo_nodo = Nodo(numero, letra)
             nuevo_nodo.siguiente = nodo
             return nuevo_nodo
         else:
             nodo.siguiente = self._insertar_recursivo(nodo.siguiente, numero, letra)
             return nodo
-    
+        
     #O(n) 
     def insertar_letra(self, letra_nueva, posicion):
         self.cabeza = self._insertar_letra_recursivo(self.cabeza, letra_nueva, posicion, 0)
