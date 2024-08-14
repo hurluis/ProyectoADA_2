@@ -26,18 +26,23 @@ class ListaEnlazada:
     # O(n²)
     def insertar_letra(self, letra_nueva, posicion):
         if self.cabeza is None:
-            return  
+            self.cabeza = Nodo(0, letra_nueva)
+            return
 
         actual = self.cabeza
         indice = 0
+        prev = None
 
         while actual and indice < posicion:
-            if indice == posicion - 1:
-                prev = actual
+            prev = actual
             actual = actual.siguiente
             indice += 1
 
-        if actual:
+        if actual is None:
+            # Llegamos al final de la lista, insertamos al final
+            nuevo_nodo = Nodo(prev.numero + 1, letra_nueva)
+            prev.siguiente = nuevo_nodo
+        else:
             if letra_nueva <= actual.letra:
                 temp_letra = actual.letra
                 actual.letra = letra_nueva
@@ -45,11 +50,9 @@ class ListaEnlazada:
                 nuevo_nodo.siguiente = actual.siguiente
                 actual.siguiente = nuevo_nodo
             else:
-                nuevo_nodo = Nodo(actual.numero, letra_nueva)
+                nuevo_nodo = Nodo(actual.numero + 1, letra_nueva)
                 nuevo_nodo.siguiente = actual.siguiente
                 actual.siguiente = nuevo_nodo
-        else:
-            print(f"La posición {posicion} está fuera de rango.")
 
     # O(n³)
     def imprimir(self):
