@@ -77,6 +77,20 @@ class ListaEnlazada:
             return nodo.letra
         return self._obtener_letra_recursivo(nodo.siguiente, numero)
 
+    #O(n)
+    def insertar_nuevo_elemento(self, numero, letra, posicion):
+        self.cabeza = self._insertar_nuevo_elemento_recursivo(self.cabeza, numero, letra, posicion)
+
+    #O(n²)
+    def _insertar_nuevo_elemento_recursivo(self, nodo, numero, letra, posicion):
+        if nodo is None:
+            return Nodo(numero, letra)
+        
+        letra_existente = self.obtener_letra(numero)
+        if letra_existente is not None:
+            self.insertar(numero, letra_existente)
+        
+        return self._insertar_letra_recursivo(nodo, letra, posicion, 0)
 
 lista = ListaEnlazada()
 
@@ -93,25 +107,12 @@ print("Lista inicial:")
 lista.imprimir()
 print("\n")
 
-if lista.cabeza is None:
-    numero = int(input("Ingrese un número: "))
-    letra = input("Ingrese una letra: ")
-    posicion = int(input("Ingrese la posición para la nueva letra: "))
-    
-    # Si la lista está vacía, solo insertamos el nuevo nodo
-    lista.insertar(numero, letra)
+numero = int(input("Ingrese un número: "))
+letra = input("Ingrese una letra: ")
+posicion = int(input("Ingrese la posición para la nueva letra: "))
+print("\n")
 
-else:
-    numero = int(input("Ingrese un número: "))
-    letra = input("Ingrese una letra: ")
-    posicion = int(input("Ingrese la posición para la nueva letra: "))
-    print("\n")
-
-    letra_existente = lista.obtener_letra(numero)
-    if letra_existente is not None:
-        lista.insertar(numero, letra_existente)
-    lista.insertar_letra(letra, posicion)
+lista.insertar_nuevo_elemento(numero, letra, posicion)
 
 print("Lista después de insertar el número y la letra:")
 lista.imprimir()
-
