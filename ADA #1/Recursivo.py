@@ -74,7 +74,7 @@ class ListaEnlazada:
 
     #O(n)
     def _obtener_letra_recursivo(self, nodo, numero):
-        if nodo is None or nodo.numero >= numero:
+        if nodo is None:
             return None  
         if nodo.siguiente and nodo.siguiente.numero > numero:
             return nodo.letra
