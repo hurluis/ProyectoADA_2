@@ -24,9 +24,13 @@ class Polinomio:
         actual = self.cabeza
         resultado = []
         while actual:
-            resultado.append(f"{actual.coef}x^{actual.grado}")
+            if actual.coef != 0:  # Solo incluir términos con coeficientes diferentes de cero
+                resultado.append(f"{actual.coef}x^{actual.grado}")
             actual = actual.siguiente
-        print(" + ".join(resultado))
+        if resultado:
+            print(" + ".join(resultado))
+        else:
+            print("El polinomio es cero.")
 
     def organizar_heap(self):
         elementos = []
