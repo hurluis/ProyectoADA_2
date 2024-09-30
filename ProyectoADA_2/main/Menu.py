@@ -71,6 +71,7 @@ class Menu:
 
     def opcionSeleccionada2(self):
         try:
+            print("\n================= Ingreso de polinomio o término =================")
             polinomio = input("Ingresa el polinomio: ")
             listas_por_grado = self.polinomio.dividir_polinomio(polinomio)
 
@@ -78,23 +79,25 @@ class Menu:
             nuevo_polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
             self.polinomio.agregar_al_final(nuevo_polinomio)
 
-            print(f"Polinomio agregado con éxito: {polinomio}")
+            print(f"\nPolinomio agregado con éxito: {polinomio}")
         except AttributeError:
             print("\nPOR FAVOR, INGRESA VALORES VÁLIDOS.")
 
     def opcionSeleccionada3(self):
         print("\nOrdenando el polinomio...")
         self.polinomio.organizar_heap()
-        print("Polinomio ordenado exitosamente.")
+        print("\nPolinomio ordenado exitosamente.")
+        print("\n==================================")
 
     def opcionSeleccionada4(self):
-        print("\nPolinomio actual:")
+        print("\n================= Polinomio actual =================")
         self.polinomio.imprimir()
 
     def opcionSeleccionada5(self):
+        print("\n================= Simplificación de polinomio =================")
         print("\nSumando términos del mismo grado...")
         self.polinomio.sumar_mismos_grados()
-        print("Suma completada. El polinomio ha sido simplificado.")
+        print("\nSuma completada. El polinomio ha sido simplificado.")
 
 menu = Menu()
 menu
