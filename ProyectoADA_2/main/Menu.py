@@ -1,4 +1,4 @@
-from funcion_polinomio import Polinomio
+from MaxHeap import Polinomio
 
 class Menu:
 
@@ -7,16 +7,16 @@ class Menu:
         self.mostrarMenu()
 
     def mostrarMenu(self):
-        print("\n====================================================")
-        print("BIENVENIDO A SU ORDENADOR MAXHEAP DE POLINOMIOS")
-        print("====================================================\n")
+        while True:
+            print("\n====================================================")
+            print("BIENVENIDO A SU ORDENADOR MAXHEAP DE POLINOMIOS")
+            print("====================================================\n")
 
-        # Verificar si el polinomio está vacío
-        if self.polinomio.cabeza is None:
-            self.mostrarOpcionesListaVacia()
-        else:
-            self.mostrarOpcionesListaConElementos()
-        self.mostrarMenu()
+            # Verificar si el polinomio está vacío
+            if self.polinomio.cabeza is None:
+                self.mostrarOpcionesListaVacia()
+            else:
+                self.mostrarOpcionesListaConElementos()
 
     def mostrarOpcionesListaVacia(self):
         print("La lista está vacía, por favor ingrese un término para comenzar.")
@@ -29,11 +29,14 @@ class Menu:
                 self.opcionSeleccionada1()
             elif seleccionarOpcion == 2:
                 self.opcionSeleccionada2()
+                # Aquí verificamos si ya tiene elementos y cambiamos al menú correcto
+                if self.polinomio.cabeza is not None:
+                    print("\nTérmino agregado, ahora la lista tiene elementos.")
+                    # Ya no es necesario volver a llamar al menú, el bucle seguirá solo
             else:
                 print("\nINGRESA UN NÚMERO EN EL RANGO")
         except ValueError:
             print("\n INGRESA UNA OPCIÓN VÁLIDA!!! \n")
-            self.mostrarOpcionesListaVacia()
 
     def mostrarOpcionesListaConElementos(self):
         try:
@@ -55,7 +58,6 @@ class Menu:
                 print("\nINGRESA UN NÚMERO EN EL RANGO")
         except ValueError:
             print("\n INGRESA UNA OPCIÓN VÁLIDA!!! \n")
-            self.mostrarOpcionesListaConElementos()
 
     def opcionSeleccionada1(self):
         print("\n================= Manual de uso =================")
@@ -66,26 +68,23 @@ class Menu:
 
     def opcionSeleccionada2(self):
         try:
-            coef = int(input("Ingresa el coeficiente: "))
-            grado = int(input("Ingresa el grado: "))
-            self.polinomio.insertar(coef, grado)
-            print(f"Término agregado: {coef}x^{grado}")
-        except ValueError:
-            print("Por favor, ingresa valores válidos.")
-        self.mostrarMenu()
+            polinomio = (input("Ingresa el polinomio: "))
+            listas_por_grado = self.polinomio.dividir_polinomio(polinomio)
+
+            # Reconstruir y asignar el polinomio dividido a la lista actual
+            self.polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
+            print(f"Polinomio agregado con éxito: {polinomio}")
+        except AttributeError:
+            print("\nPOR FAVOR, INGRESA VALORES VÁLIDOS.")
 
     def opcionSeleccionada3(self):
         print("\nOrdenando el polinomio...")
         self.polinomio.organizar_heap()
         print("Polinomio ordenado exitosamente.")
-        self.mostrarMenu()
 
     def opcionSeleccionada4(self):
         print("\nPolinomio actual:")
         self.polinomio.imprimir()
-        self.mostrarMenu()
-
-        
 
 menu = Menu()
 menu
