@@ -44,6 +44,7 @@ class Menu:
             print("2. Agregar un término a la lista.")
             print("3. Ordenar lista.")
             print("4. Mostrar lista.")
+            print("5. Sumar términos del mismo grado.")  
             seleccionarOpcion: int = int(input("\nIngresa tu opción: "))
 
             if seleccionarOpcion == 1:
@@ -54,6 +55,8 @@ class Menu:
                 self.opcionSeleccionada3()
             elif seleccionarOpcion == 4:
                 self.opcionSeleccionada4()
+            elif seleccionarOpcion == 5:
+                self.opcionSeleccionada5()  
             else:
                 print("\nINGRESA UN NÚMERO EN EL RANGO")
         except ValueError:
@@ -68,11 +71,13 @@ class Menu:
 
     def opcionSeleccionada2(self):
         try:
-            polinomio = (input("Ingresa el polinomio: "))
+            polinomio = input("Ingresa el polinomio: ")
             listas_por_grado = self.polinomio.dividir_polinomio(polinomio)
 
-            # Reconstruir y asignar el polinomio dividido a la lista actual
-            self.polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
+            # Reconstruir y añadir al polinomio actual en lugar de reemplazarlo
+            nuevo_polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
+            self.polinomio.agregar_al_final(nuevo_polinomio)
+
             print(f"Polinomio agregado con éxito: {polinomio}")
         except AttributeError:
             print("\nPOR FAVOR, INGRESA VALORES VÁLIDOS.")
@@ -85,6 +90,11 @@ class Menu:
     def opcionSeleccionada4(self):
         print("\nPolinomio actual:")
         self.polinomio.imprimir()
+
+    def opcionSeleccionada5(self):
+        print("\nSumando términos del mismo grado...")
+        self.polinomio.sumar_mismos_grados()
+        print("Suma completada. El polinomio ha sido simplificado.")
 
 menu = Menu()
 menu

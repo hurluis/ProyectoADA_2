@@ -24,13 +24,9 @@ class Polinomio:
         actual = self.cabeza
         resultado = []
         while actual:
-            if actual.coef != 0:  # Solo incluir términos con coeficientes diferentes de cero
-                resultado.append(f"{actual.coef}x^{actual.grado}")
+            resultado.append(f"{actual.coef}x^{actual.grado}")
             actual = actual.siguiente
-        if resultado:
-            print(" + ".join(resultado))
-        else:
-            print("El polinomio es cero.")
+        print(" + ".join(resultado))
 
     def organizar_heap(self):
         elementos = []
@@ -116,6 +112,43 @@ class Polinomio:
 
         return polinomio_final
 
+    def agregar_al_final(self, otro_polinomio):
+        actual = self.cabeza
+        if not actual:
+            self.cabeza = otro_polinomio.cabeza
+        else:
+            # Recorremos hasta el último nodo del polinomio actual
+            while actual.siguiente:
+                actual = actual.siguiente
+            actual.siguiente = otro_polinomio.cabeza
+
+    def sumar_mismos_grados(self):
+        if not self.cabeza:
+            print("El polinomio está vacío.")
+            return
+
+        # Usamos un diccionario para agrupar los términos por grado
+        suma_por_grado = {}
+        actual = self.cabeza
+
+        while actual:
+            if actual.grado in suma_por_grado:
+                suma_por_grado[actual.grado] += actual.coef
+            else:
+                suma_por_grado[actual.grado] = actual.coef
+            actual = actual.siguiente
+
+        # Reconstruimos el polinomio con los coeficientes sumados
+        nuevo_polinomio = Polinomio()
+        for grado in sorted(suma_por_grado.keys(), reverse=True):
+            coef = suma_por_grado[grado]
+            if coef != 0:  # Solo incluimos términos con coeficientes distintos de cero
+                nuevo_polinomio.insertar(coef, grado)
+
+        # Reemplazamos el polinomio actual por el simplificado
+        self.cabeza = nuevo_polinomio.cabeza
+
+        
 # # Uso del programa
 # ordenar = Polinomio()
 # polinomio = "33x^1 + 5x^2 - 2x^0 -3x^2 -3x^3 + 1x^1"
