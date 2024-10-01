@@ -83,7 +83,11 @@ class Menu:
 
     def opcionSeleccionada4(self):
         print("\n================= Polinomio actual =================")
-        self.polinomio.imprimir_actual()
+        self.polinomio.imprimir_polinomio()
+        if self.polinomio.esta_ordenado:
+            print("(El polinomio está ordenado)")
+        if self.polinomio.esta_sumado:
+            print("(Se han sumado los términos del mismo grado)")
 
     def opcionSeleccionada5(self):
         print("\n================= Simplificación de polinomio =================")
