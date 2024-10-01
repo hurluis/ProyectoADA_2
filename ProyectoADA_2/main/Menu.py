@@ -29,7 +29,6 @@ class Menu:
                 self.opcionSeleccionada1()
             elif seleccionarOpcion == 2:
                 self.opcionSeleccionada2()
-                # Ya no es necesario verificar con cabeza, solo continua
             else:
                 print("\nINGRESA UN NÚMERO EN EL RANGO")
         except ValueError:
@@ -61,10 +60,14 @@ class Menu:
 
     def opcionSeleccionada1(self):
         print("\n================= Manual de uso =================")
-        print("\n1. Siempre que la lista esté vacía, solo tendrás dos opciones: leer el manual o agregar un término.")
-        print("\n2. Puedes agregar términos ingresando el coeficiente y el grado.")
-        print("\n3. Después de ingresar términos, podrás ordenarlos y mostrarlos.")
-        print("\n4. Disfruta el programa que ya sabes usar!")
+        print("\n1. Siempre que la lista este vacia, iniciara solo dos opciones, leer el manual o agregar un elemento. ")
+        print("\n=======================================================================================================")
+        print("\n2. Cada vez que le hunda en agregar, puede ponerle un polinomio, o un solo término")
+        print("\n=======================================================================================================")
+        print("\n3. Una vez haya ingresado los valores, saldrá otro menú más completo, contará con las mismas dos opciones,")
+        print("además habilitará el mostrar la lista, ordenar la lista y sumar los elementos del mismo grado. ")
+        print("\n=======================================================================================================")
+        print("\n4. Disfruta el programa que ya lo sabes usar!")
 
     def opcionSeleccionada2(self):
         try:
