@@ -70,14 +70,7 @@ class Menu:
         try:
             print("\n================= Ingreso de polinomio o término =================")
             polinomio = input("Ingresa el polinomio: ")
-
-            # Asegúrate de que dividir_polinomio esté correctamente implementado
-            listas_por_grado = self.polinomio.dividir_polinomio(polinomio)
-
-            # Reconstruir y añadir al polinomio actual
-            nuevo_polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
-            self.polinomio.agregar_al_final(nuevo_polinomio)
-
+            self.polinomio.agregar_al_final(polinomio)
             print(f"\nPolinomio agregado con éxito: {polinomio}")
         except Exception as e:
             print(f"\nPOR FAVOR, INGRESA VALORES VÁLIDOS. Error: {str(e)}")
@@ -89,10 +82,8 @@ class Menu:
         print("\n==================================")
 
     def opcionSeleccionada4(self):
-        
         print("\n================= Polinomio actual =================")
-        # Imprimir el polinomio tal como fue ingresado
-        self.polinomio.imprimir_original()
+        self.polinomio.imprimir_actual()
 
     def opcionSeleccionada5(self):
         print("\n================= Simplificación de polinomio =================")
