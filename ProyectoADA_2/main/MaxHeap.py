@@ -92,29 +92,29 @@ class Polinomio:
     def organizar_heap(self):
         grados = sorted(self.listas_por_grado.keys(), reverse=True)
         for i in range(len(grados) // 2 - 1, -1, -1):
-            self._heapify(grados, len(grados), i)
+            self.ayuda_heap(grados, len(grados), i)
         
         for i in range(len(grados) - 1, 0, -1):
             grados[0], grados[i] = grados[i], grados[0]
-            self._heapify(grados, i, 0)
+            self.ayuda_heap(grados, i, 0)
         
         self.polinomio_string = self.reconstruir_polinomio()
         self.esta_ordenado = True
 
-    def _heapify(self, grados, n, i):
-        largest = i
-        left = 2 * i + 1
-        right = 2 * i + 2
+    def ayuda_heap(self, grados, n, i):
+        padre = i
+        hijo_izquierdo = 2 * i + 1
+        hijo_derecho = 2 * i + 2
 
-        if left < n and grados[left] > grados[largest]:
-            largest = left
+        if hijo_izquierdo < n and grados[hijo_izquierdo] > grados[padre]:
+            padre = hijo_izquierdo
 
-        if right < n and grados[right] > grados[largest]:
-            largest = right
+        if hijo_derecho < n and grados[hijo_derecho] > grados[padre]:
+            padre = hijo_derecho
 
-        if largest != i:
-            grados[i], grados[largest] = grados[largest], grados[i]
-            self._heapify(grados, n, largest)
+        if padre != i:
+            grados[i], grados[padre] = grados[padre], grados[i]
+            self.ayuda_heap(grados, n, padre)
 
     def imprimir_polinomio(self):
         print(self.polinomio_string)
