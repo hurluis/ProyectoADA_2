@@ -1,168 +1,124 @@
-import re
-
 class Nodo:
-    def __init__(self, coef, grado):
-        self.coef = coef
+    def __init__(self, coeficiente, grado):
+        self.coeficiente = coeficiente
         self.grado = grado
         self.siguiente = None
 
-class Polinomio:
+class ListaEnlazada:
     def __init__(self):
         self.cabeza = None
-        self.orden_original = []  # Lista para almacenar el orden original
 
-    def insertar(self, coef, grado):
-        if coef == 0:
-            print("No se permite ingresar coeficientes en 0.")
-            return
-        
-        nuevo_nodo = Nodo(coef, grado)
-        if not self.cabeza:
+    def agregar(self, coeficiente, grado):
+        nuevo_nodo = Nodo(coeficiente, grado)
+        if self.cabeza is None:
             self.cabeza = nuevo_nodo
         else:
             actual = self.cabeza
             while actual.siguiente:
                 actual = actual.siguiente
             actual.siguiente = nuevo_nodo
-        
-        # Mantener el orden original
-        self.orden_original.append((coef, grado))
 
     def imprimir(self):
         actual = self.cabeza
-        resultado = []
         while actual:
-            resultado.append(f"{actual.coef}x^{actual.grado}")
+            print(f"{actual.coeficiente}x^{actual.grado}", end=" ")
+            if actual.siguiente:
+                print("+", end=" ")
             actual = actual.siguiente
-        print(" + ".join(resultado))
-
-    def imprimir_orden_original(self):
-        # Imprimir el polinomio en el orden original
-        resultado = [f"{coef}x^{grado}" for coef, grado in self.orden_original]
-        print(" + ".join(resultado))
-
-    def organizar_heap(self):
-        elementos = []
-        actual = self.cabeza
-        while actual:
-            elementos.append((actual.coef, actual.grado))
-            actual = actual.siguiente
-
-        self._heap_sort(elementos)
-
-        # Reconstruir la lista enlazada con los elementos ordenados
-        self.cabeza = None
-        for coef, grado in elementos:
-            self.insertar(coef, grado)
-
-    def _heap_sort(self, arr):
-        n = len(arr)
-
-        # Construir el heap (Max-Heap)
-        for i in range(n // 2 - 1, -1, -1):
-            self._heapify(arr, n, i)
-
-        # Extraer elementos del heap uno por uno
-        for i in range(n - 1, 0, -1):
-            arr[i], arr[0] = arr[0], arr[i]  # Intercambiar
-            self._heapify(arr, i, 0)
-
-    def _heapify(self, arr, n, i):
-        mayor = i  # Inicializar mayor como raíz
-        izquierda = 2 * i + 1  # Hijo izquierdo
-        derecha = 2 * i + 2    # Hijo derecho
-
-        # Verificar si el hijo izquierdo tiene mayor grado o igual grado pero mayor coeficiente
-        if izquierda < n and (arr[izquierda][1] > arr[mayor][1] or 
-                             (arr[izquierda][1] == arr[mayor][1] and arr[izquierda][0] > arr[mayor][0])):
-            mayor = izquierda
-
-        # Verificar si el hijo derecho tiene mayor grado o igual grado pero mayor coeficiente
-        if derecha < n and (arr[derecha][1] > arr[mayor][1] or 
-                            (arr[derecha][1] == arr[mayor][1] and arr[derecha][0] > arr[mayor][0])):
-            mayor = derecha
-
-        # Cambiar la raíz si es necesario
-        if mayor != i:
-            arr[i], arr[mayor] = arr[mayor], arr[i]
-            self._heapify(arr, n, mayor)
-
-    @staticmethod
-    def dividir_polinomio(polinomio):
-        # Modificación de la expresión regular para soportar coeficientes implícitos y signos negativos
-        terminos = re.findall(r'([+-]?\d*)x\^(\d+)', polinomio)
-        lista_por_grado = {}
-
-        for termino in terminos:
-            coef_str, grado_str = termino
-
-            # Manejar coeficiente implícito como 1 o -1
-            if coef_str == '' or coef_str == '+':
-                coef = 1
-            elif coef_str == '-':
-                coef = -1
-            else:
-                coef = int(coef_str)
-
-            grado = int(grado_str)
-
-            if coef != 0:  # Validar coeficiente en 0
-                if grado not in lista_por_grado:
-                    lista_por_grado[grado] = Polinomio()
-                lista_por_grado[grado].insertar(coef, grado)
-
-        return lista_por_grado
-
-    @staticmethod
-    def reconstruir_polinomio(lista_por_grado):
-        polinomio_final = Polinomio()
-
-        # Conectar cada lista de grados
-        for grado in sorted(lista_por_grado.keys()):
-            actual = lista_por_grado[grado].cabeza
-            while actual:
-                polinomio_final.insertar(actual.coef, actual.grado)
-                actual = actual.siguiente
-
-        return polinomio_final
-
-    def agregar_al_final(self, otro_polinomio):
-        actual = self.cabeza
-        if not actual:
-            self.cabeza = otro_polinomio.cabeza
-        else:
-            # Recorremos hasta el último nodo del polinomio actual
-            while actual.siguiente:
-                actual = actual.siguiente
-            actual.siguiente = otro_polinomio.cabeza
+        print()
 
     def sumar_mismos_grados(self):
-        if not self.cabeza:
-            print("El polinomio está vacío.")
-            return
-
-        # Usamos un diccionario para agrupar los términos por grado
-        suma_por_grado = {}
+        grado_dict = {}
         actual = self.cabeza
-
         while actual:
-            if actual.grado in suma_por_grado:
-                suma_por_grado[actual.grado] += actual.coef
+            if actual.grado in grado_dict:
+                grado_dict[actual.grado] += actual.coeficiente
             else:
-                suma_por_grado[actual.grado] = actual.coef
+                grado_dict[actual.grado] = actual.coeficiente
             actual = actual.siguiente
-
-        # Reconstruimos el polinomio con los coeficientes sumados
-        nuevo_polinomio = Polinomio()
-        for grado in sorted(suma_por_grado.keys(), reverse=True):
-            coef = suma_por_grado[grado]
-            if coef != 0:  # Solo incluimos términos con coeficientes distintos de cero
-                nuevo_polinomio.insertar(coef, grado)
-
-        # Reemplazamos el polinomio actual por el simplificado
-        self.cabeza = nuevo_polinomio.cabeza
-
         
+        self.cabeza = None
+        for grado, coeficiente in grado_dict.items():
+            if coeficiente != 0:  # Ignorar coeficientes cero
+                self.agregar(coeficiente, grado)
+
+class Polinomio:
+    def __init__(self):
+        self.listas_por_grado = {}  # Diccionario para almacenar listas enlazadas
+
+    def esta_vacio(self):
+        return len(self.listas_por_grado) == 0
+
+    def dividir_polinomio(self, polinomio):
+        terminos = polinomio.replace(" ", "").replace("-", "+-").split("+")
+        for termino in terminos:
+            if 'x^' in termino:
+                coeficiente, grado = termino.split("x^")
+                grado = int(grado)
+            elif 'x' in termino:
+                coeficiente = termino[:-1]
+                grado = 1
+            else:
+                coeficiente = termino
+                grado = 0
+
+            coeficiente = int(coeficiente) if coeficiente else 1
+            if grado not in self.listas_por_grado:
+                self.listas_por_grado[grado] = ListaEnlazada()
+            self.listas_por_grado[grado].agregar(coeficiente, grado)
+
+    def agregar_al_final(self, nuevo_polinomio):
+        for grado, lista in nuevo_polinomio.listas_por_grado.items():
+            if grado not in self.listas_por_grado:
+                self.listas_por_grado[grado] = lista
+            else:
+                actual = self.listas_por_grado[grado].cabeza
+                while actual.siguiente:
+                    actual = actual.siguiente
+                actual.siguiente = lista.cabeza
+
+    def organizar_heap(self):
+        self.listas_por_grado = dict(sorted(self.listas_por_grado.items(), key=lambda item: item[0], reverse=True))
+
+    def imprimir(self):
+        polinomio_str = ""
+        for grado in sorted(self.listas_por_grado.keys(), reverse=True):
+            lista = self.listas_por_grado[grado]
+            actual = lista.cabeza
+            while actual:
+                polinomio_str += f"{actual.coeficiente}x^{actual.grado} "
+                if actual.siguiente:
+                    polinomio_str += "+ "
+                actual = actual.siguiente
+        print(polinomio_str.strip())  # Eliminar espacios innecesarios al final
+
+    def imprimir_original(self):
+        polinomio_original = ""
+        for grado in sorted(self.listas_por_grado.keys()):
+            lista = self.listas_por_grado[grado]
+            actual = lista.cabeza
+            while actual:
+                if polinomio_original:
+                    polinomio_original += " + "
+                polinomio_original += f"{actual.coeficiente}x^{actual.grado}"
+                actual = actual.siguiente
+        print(polinomio_original)
+    def sumar_mismos_grados(self):
+        for lista in self.listas_por_grado.values():
+            lista.sumar_mismos_grados()
+
+    def reconstruir_polinomio(self, listas_por_grado):
+        nuevo_polinomio = Polinomio()
+        for grado in sorted(listas_por_grado.keys()):
+            lista = listas_por_grado[grado]
+            actual = lista.cabeza
+            while actual:
+                nuevo_polinomio.agregar_al_final(nuevo_polinomio)
+                nuevo_polinomio.agregar(actual.coeficiente, grado)
+                actual = actual.siguiente
+        return nuevo_polinomio
+
+
 # # Uso del programa
 # ordenar = Polinomio()
 # polinomio = "33x^1 + 5x^2 - 2x^0 -3x^2 -3x^3 + 1x^1"

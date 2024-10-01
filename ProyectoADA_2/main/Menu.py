@@ -13,7 +13,7 @@ class Menu:
             print("====================================================\n")
 
             # Verificar si el polinomio está vacío
-            if self.polinomio.cabeza is None:
+            if self.polinomio.esta_vacio():
                 self.mostrarOpcionesListaVacia()
             else:
                 self.mostrarOpcionesListaConElementos()
@@ -29,10 +29,7 @@ class Menu:
                 self.opcionSeleccionada1()
             elif seleccionarOpcion == 2:
                 self.opcionSeleccionada2()
-                # Aquí verificamos si ya tiene elementos y cambiamos al menú correcto
-                if self.polinomio.cabeza is not None:
-                    print("\nTérmino agregado, ahora la lista tiene elementos.")
-                    # Ya no es necesario volver a llamar al menú, el bucle seguirá solo
+                # Ya no es necesario verificar con cabeza, solo continua
             else:
                 print("\nINGRESA UN NÚMERO EN EL RANGO")
         except ValueError:
@@ -73,15 +70,17 @@ class Menu:
         try:
             print("\n================= Ingreso de polinomio o término =================")
             polinomio = input("Ingresa el polinomio: ")
+
+            # Asegúrate de que dividir_polinomio esté correctamente implementado
             listas_por_grado = self.polinomio.dividir_polinomio(polinomio)
 
-            # Reconstruir y añadir al polinomio actual en lugar de reemplazarlo
+            # Reconstruir y añadir al polinomio actual
             nuevo_polinomio = self.polinomio.reconstruir_polinomio(listas_por_grado)
             self.polinomio.agregar_al_final(nuevo_polinomio)
 
             print(f"\nPolinomio agregado con éxito: {polinomio}")
-        except AttributeError:
-            print("\nPOR FAVOR, INGRESA VALORES VÁLIDOS.")
+        except Exception as e:
+            print(f"\nPOR FAVOR, INGRESA VALORES VÁLIDOS. Error: {str(e)}")
 
     def opcionSeleccionada3(self):
         print("\nOrdenando el polinomio...")
@@ -90,8 +89,10 @@ class Menu:
         print("\n==================================")
 
     def opcionSeleccionada4(self):
+        
         print("\n================= Polinomio actual =================")
-        self.polinomio.imprimir()
+        # Imprimir el polinomio tal como fue ingresado
+        self.polinomio.imprimir_original()
 
     def opcionSeleccionada5(self):
         print("\n================= Simplificación de polinomio =================")
