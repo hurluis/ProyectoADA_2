@@ -9,8 +9,13 @@ class Nodo:
 class Polinomio:
     def __init__(self):
         self.cabeza = None
+        self.orden_original = []  # Lista para almacenar el orden original
 
     def insertar(self, coef, grado):
+        if coef == 0:
+            print("No se permite ingresar coeficientes en 0.")
+            return
+        
         nuevo_nodo = Nodo(coef, grado)
         if not self.cabeza:
             self.cabeza = nuevo_nodo
@@ -19,6 +24,9 @@ class Polinomio:
             while actual.siguiente:
                 actual = actual.siguiente
             actual.siguiente = nuevo_nodo
+        
+        # Mantener el orden original
+        self.orden_original.append((coef, grado))
 
     def imprimir(self):
         actual = self.cabeza
@@ -26,6 +34,11 @@ class Polinomio:
         while actual:
             resultado.append(f"{actual.coef}x^{actual.grado}")
             actual = actual.siguiente
+        print(" + ".join(resultado))
+
+    def imprimir_orden_original(self):
+        # Imprimir el polinomio en el orden original
+        resultado = [f"{coef}x^{grado}" for coef, grado in self.orden_original]
         print(" + ".join(resultado))
 
     def organizar_heap(self):
@@ -93,9 +106,10 @@ class Polinomio:
 
             grado = int(grado_str)
 
-            if grado not in lista_por_grado:
-                lista_por_grado[grado] = Polinomio()
-            lista_por_grado[grado].insertar(coef, grado)
+            if coef != 0:  # Validar coeficiente en 0
+                if grado not in lista_por_grado:
+                    lista_por_grado[grado] = Polinomio()
+                lista_por_grado[grado].insertar(coef, grado)
 
         return lista_por_grado
 
